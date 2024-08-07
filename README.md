@@ -276,3 +276,55 @@ NAME                                       READY   SECRET         ISSUER        
 certificate.cert-manager.io/ipfs-tls       True    ipfs-tls       letsencrypt-prod   Certificate is up to date and has not expired   7m
 certificate.cert-manager.io/provider-tls   True    provider-tls   letsencrypt-prod   Certificate is up to date and has not expired   7m
 ```
+
+## Example with MiniKube cluster
+
+Instructions to deploy [OceanProtocol Provider](https://docs.oceanprotocol.com/developers/provider) on a
+[MiniKube](https://minikube.sigs.k8s.io/docs/start/) Kubernetes cluster, installed following the instructions
+on the previous link.
+
+After starting the cluster, enable nginx ingress by running:
+
+```shell
+minikube addons enable ingress
+```
+
+To run locally, configure in `/etc/hosts` the following entry pointing to the IP of the minikube cluster,
+which can be obtained by running `minikube ip`. For instance, if the cluster IP is `192.168.64.5`:
+
+```
+192.168.64.5    ipfs.local provider.local
+```
+
+Once the Kubernetes cluster is ready, it is time to install the Helm chart for the Compute to Data Provider.
+First, add the repository with this chart:
+
+```console
+helm repo add oceanprotocol-provider https://rhizomik.github.io/oceanprotocol-provider/
+```
+
+Then, install it using the provided sample values for a MiniKube deployment in `values-minikube.yaml`:
+
+```shell
+helm upgrade --install --namespace dataspace --create-namespace --values ./values-minikube.yaml minikube-ctd oceanprotocol-provider/oceanprotocol-provider
+```
+
+Then, follow the instructions on the output of the Helm command. First, to wait until all pods are running, which can
+be checked using the indicated command, for instance:
+
+```shell
+kubectl get --namespace dataspace pods
+```
+
+Second, to initialize the PostgreSQL database using the command also indicated in Helm's output, for instance:
+
+```shell
+kubectl run --namespace dataspace --attach --rm --restart=Never \
+  --image curlimages/curl pgsqlinit -- \
+  curl -X POST -H "accept: application/json" \
+    -H "Admin: myAdminSecret" \
+    "http://minikube-ctd-operator-api.dataspace:8050/api/v1/operator/pgsqlinit"
+```
+
+Finally, to check the provider is running, you can list the computational environments available using the
+URL indicated in the output, for instance: http://provider.local/api/services/computeEnvironments

@@ -1,0 +1,62 @@
+# Default values for ctd-provider.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+networks:
+  networksURL: |
+    { "100": "https://rpc.genx.minimal-gaia-x.eu",
+      "32456": "https://rpc.dev.pontus-x.eu",
+      "32457": "https://rpc.test.pontus-x.eu" }
+  privateProviders: |
+    { "100": "0x0001234567890123456789012345678901234567890123456789012345678901",
+      "32456": "0x0001234567890123456789012345678901234567890123456789012345678901",
+      "32457": "0x0001234567890123456789012345678901234567890123456789012345678901" }
+  publicProviders: |
+    [ "0x88867CaFe3b2839126b7470ccF79C26Ae847b626" ]
+  privateOperator: "0x0001234567890123456789012345678901234567890123456789012345678901"
+  publicOperator: "0x88867CaFe3b2839126b7470ccF79C26Ae847b626"
+  adminSecret: "myAdminSecret"
+
+ipfs:
+  storage:
+    classname: "standard" # Use a storage class with dynamic provisioning, like Minikube's default storage class 'standard'
+  ingress:
+    annotations:
+#      cert-manager.io/cluster-issuer: letsencrypt-production
+    host: "ipfs.local"
+#    tls: true
+#    secretName: ipfs-tls
+
+postgres:
+  storage:
+    classname: "standard" # Use a storage class with dynamic provisioning, like Minikube's default storage class 'standard'
+  db:
+    user: "postgresadmin"
+    pass: "postgresadminpass"
+
+provider:
+  image:
+    tag: "v2.1.3"
+  ipfsGateway: "https://ipfs.local"
+  providerFeeToken: |
+    { "100": "0x0995527d3473b3a98c471f1ed8787acd77fbf009", 
+     "32456": "0x8a4826071983655805bf4f29828577cd6b1ac0cb",
+     "32457": "0xdd0a0278f6BAF167999ccd8Aa6C11A9e2fA37F0a" }
+  aquariusURL: "https://aquarius.pontus-x.eu/"
+  ingress:
+    annotations:
+#      cert-manager.io/cluster-issuer: letsencrypt-prod
+    host: "provider.local"
+#    tls: true
+#    secretName: provider-tls
+
+operator-engine:
+  image:
+    repository: "rogargon/operator-engine"
+    tag: "gke-gpu"
+  description: "MiniKube Data Room"
+  jobStorageClassname: "standard"  # Use a storage class with 'reclaimPolicy: Delete', like Minikube's default storage class 'standard'
+  priceMinute: "0"
+  ipfsOutputPrefix: "https://ipfs.local/ipfs/"
+  ipfsAdminLogsPrefix: "https://ipfs.local/ipfs/"
+  podConfContainer: "rogargon/pod-configuration:timeout"
