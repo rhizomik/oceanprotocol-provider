@@ -2,6 +2,30 @@ apiVersion: v1
 entries:
   oceanprotocol-provider:
   - apiVersion: v2
+    appVersion: 0.3.0
+    created: "2026-02-05T18:30:20.148293708Z"
+    dependencies:
+    - condition: ipfs.enabled
+      name: ipfs
+      repository: ""
+      version: 0.2.0
+    - name: postgres
+      repository: ""
+      version: 0.2.0
+    - name: provider
+      repository: ""
+      version: 0.2.2
+    - name: operator-api
+      repository: ""
+      version: 0.3.0
+    description: A Helm chart for Kubernetes to deploy a Ocean Protocol Provider
+    digest: 1c01649ba8cd5848fb0b8c3cbc9582f9e98564ebff8b242b2d15ea775258b6bc
+    name: oceanprotocol-provider
+    type: application
+    urls:
+    - https://github.com/AgrospAI/oceanprotocol-provider/releases/download/oceanprotocol-provider-0.3.0/oceanprotocol-provider-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
     appVersion: 0.2.1
     created: "2025-07-23T08:18:01.460812637Z"
     dependencies:
@@ -96,4 +120,4 @@ entries:
     urls:
     - https://github.com/rhizomik/oceanprotocol-provider/releases/download/operator-engine-0.2.0/operator-engine-0.2.0.tgz
     version: 0.2.0
-generated: "2025-07-23T08:18:01.460832544Z"
+generated: "2026-02-05T18:30:20.148311401Z"
