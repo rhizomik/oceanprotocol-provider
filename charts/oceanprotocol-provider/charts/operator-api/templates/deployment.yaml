@@ -81,6 +81,12 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-postgres
               key: POSTGRES_PORT
+        {{- if .Values.extraEnvFrom }}
+        envFrom:
+          {{- range .Values.extraEnvFrom }}
+          - {{- toYaml . | nindent 14 }}
+          {{- end }}
+        {{- end }}
         ports:
         - containerPort: 3000
           protocol: TCP

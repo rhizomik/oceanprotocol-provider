@@ -99,3 +99,4 @@ operator-api:
     tag: ""
     digest: ""
     pullPolicy: ""
+  extraEnvFrom: []
